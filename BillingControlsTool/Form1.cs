@@ -52,6 +52,11 @@ namespace BillingControlsTool
         {
             InitializeComponent();
 
+            foreach (Control c in tableLayoutPanel4.Controls)
+                c.Enabled = false;
+            foreach (Control c in tableLayoutPanel3.Controls)
+                c.Enabled = false;
+
             if(File.Exists("config.json"))
             {
                 var cfg = File.ReadAllText("config.json");
@@ -269,6 +274,8 @@ namespace BillingControlsTool
 
             if (ports.Length > 0)
                 comboBox1.SelectedIndex = 0;
+            else
+                comboBox1.SelectedIndex = -1;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -285,6 +292,21 @@ namespace BillingControlsTool
 
 
             File.WriteAllText("config.json",JsonConvert.SerializeObject(cfg));
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(comboBox1.SelectedIndex > -1)
+            {
+                button3.Enabled = true;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedIndex > -1)
+                foreach (Control c in tableLayoutPanel3.Controls)
+                    c.Enabled = true;
         }
     }
 
