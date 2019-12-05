@@ -222,7 +222,7 @@ namespace BillingControlsTool
 
                 string ext_param = "{\"api_key\":\"" + textBox5.Text.Trim() + "\",\"to_bill\":\"" + textBox4.Text.Trim() + "\",\"active_duration\":\"" + textBox3.Text.Trim() + "\"}";
 
-                var chars2 = ASCIIEncoding.ASCII.GetBytes(wifi_cred);
+                var chars2 = ASCIIEncoding.ASCII.GetBytes(ext_param);
                 chars.CopyTo(buffer, 0);
 
                 w.Write('s'); //write params key
