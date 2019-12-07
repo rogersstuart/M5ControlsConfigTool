@@ -140,7 +140,7 @@ namespace BillingControlsTool
 
                     w.Write('b'); //read extended params
 
-                    r.ReadBlock(buffer, 0, 400);
+                    r.ReadBlock(buffer, 0, 200);
 
                     var dser2 = JsonConvert.DeserializeObject<OptionsExtension>(new string(buffer), new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
