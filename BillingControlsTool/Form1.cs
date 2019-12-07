@@ -104,8 +104,8 @@ namespace BillingControlsTool
                     w.Write('o');
                     w.Write('g');
 
-                    while (r.Read() != 'z')//ack
-                        await Task.Delay(2000);
+                    if (r.Read() != 'z') //ack
+                        return;
 
                     char[] buffer = new char[200];
 
@@ -133,8 +133,8 @@ namespace BillingControlsTool
                     w.Write('o');
                     w.Write('g');
 
-                    while (r.Read() != 'z') //ack
-                        await Task.Delay(2000);
+                    if (r.Read() != 'z') //ack
+                        return;
                     
                     buffer = new char[200];
 
@@ -194,8 +194,8 @@ namespace BillingControlsTool
                 w.Write('o');
                 w.Write('g');
 
-                while (r.Read() != 'z') //ack
-                    await Task.Delay(2000);
+                if (r.Read() != 'z') //ack
+                    return;
 
                 char[] buffer = new char[200];
 
@@ -204,14 +204,19 @@ namespace BillingControlsTool
                 var chars = ASCIIEncoding.ASCII.GetBytes(wifi_cred);
                 chars.CopyTo(buffer, 0);
 
-                w.Write('w');
+                w.Write('w'); //write credentials command
 
                 w.Write(buffer);
 
-                r.Read();
+                await Task.Delay(100);
+
+                if (r.Read() != 'z') //ack
+                    return;
+
+                await Task.Delay(100);
 
                 /////////////////////////////////////////////////////////////////////
-                
+
                 w.Write('k'); //programming mode command
 
                 //programming mode key
@@ -220,17 +225,17 @@ namespace BillingControlsTool
                 w.Write('o');
                 w.Write('g');
 
-                while (r.Read() != 'z') //ack
-                    await Task.Delay(2000);
+                if (r.Read() != 'z') //ack
+                    return;
 
                 buffer = new char[200];
 
                 string ext_param = "{\"api_key\":\"" + textBox5.Text.Trim() + "\",\"to_bill\":\"" + textBox4.Text.Trim() + "\",\"active_duration\":\"" + textBox3.Text.Trim() + "\"}";
 
                 var chars2 = ASCIIEncoding.ASCII.GetBytes(ext_param);
-                chars.CopyTo(buffer, 0);
+                chars2.CopyTo(buffer, 0);
 
-                w.Write('s'); //write params key
+                w.Write('s'); //write params command
 
                 w.Write(buffer);
 
@@ -273,9 +278,16 @@ namespace BillingControlsTool
             comboBox1.DataSource = ports;
 
             if (ports.Length > 0)
+            {
                 comboBox1.SelectedIndex = 0;
+                foreach (Control c in tableLayoutPanel4.Controls)
+                    c.Enabled = true;
+            } 
             else
+            {
                 comboBox1.SelectedIndex = -1;
+            }
+                
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
